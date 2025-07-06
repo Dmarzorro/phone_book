@@ -34,4 +34,12 @@ class ContactList:
 
         return "\n".join(result)
 
+    def delete_contact(self, contact):
+        if contact in self.contacts:
+            self.contacts.remove(contact)
+            return "Contact deleted successfully"
+        else:
+            return "This contact does not exist"
+
+
 
