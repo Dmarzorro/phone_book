@@ -17,7 +17,8 @@ class Contact:
         if not isinstance(other, Contact):
             return False
         return (
-            self.first_name == other.first_name and self.last_name == other.last_name
+            self.first_name == other.first_name
+            and self.last_name == other.last_name
             and self.phone_number == other.phone_number
             and self.email == other.email
         )
