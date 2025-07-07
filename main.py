@@ -1,1 +1,1 @@
-if __name__ == '__main__':
+from book import *
