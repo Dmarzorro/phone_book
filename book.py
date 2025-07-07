@@ -13,6 +13,15 @@ class Contact:
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.phone_number})"
 
+    def __eq__(self, other):
+        if not isinstance(other, Contact):
+            return False
+        return (
+            self.first_name == other.first_name and self.last_name == other.last_name
+            and self.phone_number == other.phone_number
+            and self.email == other.email
+        )
+
 class ContactList:
     def __init__(self):
         self.contacts = []
