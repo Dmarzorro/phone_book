@@ -50,6 +50,3 @@ class ContactList:
             return "Contact deleted successfully"
         else:
             return "This contact does not exist"
-
-
-

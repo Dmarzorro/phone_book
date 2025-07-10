@@ -41,4 +41,6 @@ class Menu:
 
         try:
             choice = int(input("Choose contact: "))
+            contact = self.contact_list.contacts[choice]
+            print(self)
 
