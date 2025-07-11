@@ -43,3 +43,41 @@ class Menu:
             print("Contact deleted successfully")
         except (IndexError, TypeError):
             print("This contact does not exist or invalid input")
+
+    def edit_contact(self):
+        if not self.contact_list.contacts:
+            print("No contacts to edit")
+            return
+
+        print("\n Choose contact to edit: ")
+        for idx, contact in enumerate(self.contact_list.contacts, start=1):
+            print(f"{idx}. {contact}")
+
+        try:
+            choice = int(input("Choose contact: "))
+            contact = self.contact_list.contacts[choice - 1]
+            new_first_name = input("First name: ")
+            new_last_name = input("Last name: ")
+            new_phone_number = input("Phone number: ")
+            new_email = input("Email address: ") or None
+
+            self.contact_list.edit_contact(
+                contact,
+                new_first_name=new_first_name,
+                new_last_name=new_last_name,
+                new_phone_number=new_phone_number,
+                new_email=new_email,
+            )
+            print("Contact edited successfully")
+        except (IndexError, TypeError):
+            print("This contact does not exist or invalid input")
+
+    def handle_choice(self, choice):
+        match choice:
+            case "1":
+                self.add_contact()
+            case "2":
+                self.delete_contact()
+            case "3":
+                self.edit_contact()
+
