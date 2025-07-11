@@ -17,9 +17,6 @@ class Menu:
         print('3. Delete Contact')
         print('4. Exit')
 
-    choice = input("Choose action: ")
-
-
     def add_contact(self):
         first_name = input("First name: ")
         last_name = input("Last name: ")
