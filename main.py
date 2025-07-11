@@ -41,6 +41,8 @@ class Menu:
 
         try:
             choice = int(input("Choose contact: "))
-            contact = self.contact_list.contacts[choice]
-            print(self)
-
+            contact = self.contact_list.contacts[choice - 1]
+            self.contact_list.delete_contact(contact)
+            print("Contact deleted successfully")
+        except (IndexError, TypeError):
+            print("This contact does not exist or invalid input")
