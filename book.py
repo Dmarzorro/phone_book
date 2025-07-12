@@ -51,10 +51,12 @@ class ContactList:
         else:
             return "This contact does not exist"
 
-    def edit_contact(self, contact, new_first_name=None, new_last_name=None, new_email=None):
-        if new_first_name
+    def edit_contact(self, contact, new_first_name=None, new_last_name=None, new_email=None, new_phone_number=None):
+        if new_first_name:
             contact.first_name = new_first_name
         if new_last_name:
             contact.last_name = new_last_name
         if new_email:
             contact.email = new_email
+        if new_phone_number:
+            contact.phone_number = new_phone_number
