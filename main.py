@@ -56,10 +56,13 @@ class Menu:
         try:
             choice = int(input("Choose contact: "))
             contact = self.contact_list.contacts[choice - 1]
-            new_first_name = input("First name: ")
-            new_last_name = input("Last name: ")
-            new_phone_number = input("Phone number: ")
-            new_email = input("Email address: ") or None
+
+            print("\nLeave blank to keep current values")
+
+            new_first_name = input("First name: ") or contact.first_name
+            new_last_name = input("Last name: ") or contact.last_name
+            new_phone_number = input("Phone number: ") or contact.phone_number
+            new_email = input("Email address: ") or contact.email
 
             self.contact_list.edit_contact(
                 contact,
@@ -69,7 +72,7 @@ class Menu:
                 new_email=new_email,
             )
             print("Contact edited successfully")
-        except (IndexError, TypeError):
+        except (IndexError, TypeError, ValueError):
             print("This contact does not exist or invalid input")
 
     def handle_choice(self, choice):
