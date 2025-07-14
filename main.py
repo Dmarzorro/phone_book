@@ -1,4 +1,5 @@
 from book import *
+import re
 
 class Menu:
     def __init__(self):
@@ -15,16 +16,27 @@ class Menu:
         print('1. Add Contact')
         print('2. Edit Contact')
         print('3. Delete Contact')
-        print('4. Exit')
+        print('4. Show Contact list')
+        print('5. Exit')
+
+    def show_contacts(self):
+        print(self.contact_list.show_contacts())
 
     def add_contact(self):
         first_name = input("First name: ")
         last_name = input("Last name: ")
+
         phone_number = input("Phone number: ")
+        pattern = r"^\+?[0-9\s\-]+$"
+        if not re.match(pattern, phone_number):
+            print(f"Invalid phone number: {phone_number}")
+            return
+
         email = input("Email address: ") or None
 
         contact = Contact(first_name, last_name, phone_number, email)
         result = self.contact_list.add_contact(contact)
+        print(f"Added: {contact}")
         print(result)
 
     def delete_contact(self):
@@ -59,6 +71,11 @@ class Menu:
 
             print("\nLeave blank to keep current values")
 
+            confirm = input("Edit this contact? (y/n) or leave blank to cancel: ")
+            if confirm.lower() != "y":
+                print("Contact edit cancelled")
+                return
+
             new_first_name = input("First name: ") or contact.first_name
             new_last_name = input("Last name: ") or contact.last_name
             new_phone_number = input("Phone number: ") or contact.phone_number
@@ -83,4 +100,13 @@ class Menu:
                 self.delete_contact()
             case "3":
                 self.edit_contact()
+            case "4":
+                self.show_contacts()
+            case "5":
+                print("Exiting")
+                exit()
+
+if __name__ == "__main__":
+    menu = Menu()
+    menu.run()
 
