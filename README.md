@@ -12,12 +12,15 @@ Input validation and error handling using try-except and regex
 
 Modular design for future extension (e.g., file/database storage)
 
-🧠 What I learned
+What I learned
 Writing clean, reusable code using class methods and separation of concerns
 
 Handling user input flow inside CLI menus
 
 Debugging logic with real-time input/output cycles
+
+
+
 
 💬 Example usage
 === Contact Book ===
