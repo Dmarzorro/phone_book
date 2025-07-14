@@ -20,8 +20,6 @@ Handling user input flow inside CLI menus
 Debugging logic with real-time input/output cycles
 
 
-
-
 💬 Example usage
 === Contact Book ===
 1. Add Contact
