@@ -1,4 +1,4 @@
-from book import *
+from desktop_app.book import *
 import re
 
 class Menu:
