@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 class Contact:
@@ -8,7 +9,7 @@ class Contact:
         self.phone_number = phone_number
         self.tags = tags if tags else []
         self.created_at = datetime.now()
-        self.id = id(self)
+        self.id = uuid.uuid4()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.phone_number})"
