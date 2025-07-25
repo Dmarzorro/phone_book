@@ -97,9 +97,9 @@ class Menu:
             case "1":
                 self.add_contact()
             case "2":
-                self.delete_contact()
-            case "3":
                 self.edit_contact()
+            case "3":
+                self.delete_contact()
             case "4":
                 self.show_contacts()
             case "5":
