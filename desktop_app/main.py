@@ -1,5 +1,5 @@
 from desktop_app.book import *
-import re
+from helper import *
 
 class Menu:
     def __init__(self):
@@ -23,16 +23,30 @@ class Menu:
         print(self.contact_list.show_contacts())
 
     def add_contact(self):
-        first_name = input("First name: ")
-        last_name = input("Last name: ")
+        first_name = prompt_valid("First name: ", validate_name)
+        try:
+            first_name = validate_name(first_name)
+        except ValidationError as exc:
+            print(f"Invalid first name {exc}")
 
-        phone_number = input("Phone number: ")
-        pattern = r"^\+?[0-9\s\-]+$"
-        if not re.match(pattern, phone_number):
-            print(f"Invalid phone number: {phone_number}")
-            return
+        last_name = prompt_valid("Last name: ", validate_name)
+        try:
+            last_name = validate_name(last_name)
+        except ValidationError as exc:
+            print(f"Invalid last name {exc})")
+
+        phone_number = prompt_valid("Phone number: ", validate_phone)
+        try:
+            phone_number = validate_phone(phone_number)
+        except ValidationError as exc:
+            print(f"Invalid phone number {exc}")
 
         email = input("Email address: ") or None
+        if email:
+            try:
+                email = validate_email(email)
+            except ValidationError as exc:
+                print(f"Invalid email address {exc}")
 
         contact = Contact(first_name, last_name, phone_number, email)
         result = self.contact_list.add_contact(contact)
