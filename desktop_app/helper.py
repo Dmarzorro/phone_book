@@ -14,6 +14,7 @@ class ValidationError(Exception):
         self.code = code
 
 __all__ = (
+    "prompt_valid",
     "validate_phone",
     "validate_email",
     "validate_name",
@@ -21,6 +22,7 @@ __all__ = (
     "ensure_unique_phone",
     "ensure_unique_email",
     "generate_uuid",
+    "ValidationError",
 )
 
 def validate_phone(raw: str, region: str = "PL", *, strict:bool = True) -> str: # E.164 format
@@ -30,8 +32,8 @@ def validate_phone(raw: str, region: str = "PL", *, strict:bool = True) -> str: 
 
     try:
         phone_number = pn.parse(raw, region)
-    except NumberParseException as exception:
-        raise (f"Invalid phone number format {exception}") from None
+    except NumberParseException:
+        raise ValidationError(f"Invalid number: wrong number format") from None
 
     if not pn.is_possible_number(phone_number):
         raise ValidationError("Number is impossible for region (lenghth or prefix)")
@@ -50,8 +52,7 @@ def validate_email(raw: str) -> str:
         res = _ve(raw, check_deliverability=False)
     except EmailNotValidError as exc:
         raise ValidationError(f"invalid mail: {exc}") from None
-
-    return res.email
+    return res.normalized
 
 
 def validate_name(raw: str) -> str:
@@ -96,13 +97,29 @@ def slugify_name(raw: str) -> str:
 
     return slug
 
+def ensure_unique_phone(raw: str, existing: Iterable[str]) -> str:
+    phone = validate_phone(raw)
+    normalized_existing = {validate_phone(p) for p in existing}
+    if phone in normalized_existing:
+        raise ValidationError("Phone number already exists")
+    return phone
 
+def ensure_unique_email(raw: str, existing: Iterable[str]) -> str:
+    email = validate_email(raw).lower()
 
-def ensure_unique_phone(raw: str) -> str:
+    normalized_existing = {e.lower() for e in existing}
+    if email in normalized_existing:
+        raise ValidationError("Email already exists")
 
-def ensure_unique_email(raw: str) -> str:
+    return email
 
-def generate_uuid():
+def generate_uuid() -> str:
+    return str(uuid.uuid4())
 
-
-
+def prompt_valid(prompt: str, validator) -> str:
+    while True:
+        value = input(prompt)
+        try:
+            return validator(value)
+        except ValidationError as exc:
+            print(exc)
