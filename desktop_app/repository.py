@@ -39,4 +39,16 @@ def add_contact(first_name: str, last_name: str, phone: str, email: Optional[str
         raise ValidationError(f"Contact already exists: {exc}")
 
 def delete_contact(contact_id: UUID) -> bool:
-    
+    """
+    Deletes a contact identified by the given UUID.
+    This function removes a contact from a database or data structure using the
+    provided unique identifier. It ensures the contact associated with the
+    provided ``contact_id`` is deleted and confirms the operation was successful.
+    """
+    try:
+        with db.atomic():
+            contact = Contact.get(Contact.id ==contact_id)
+            contact.delete_instance()
+        return True
+    except Contact.DoesNotExist:
+        return False
