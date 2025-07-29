@@ -52,3 +52,47 @@ def delete_contact(contact_id: UUID) -> bool:
         return True
     except Contact.DoesNotExist:
         return False
+
+def edit_contact(contact_id: UUID,
+                 first_name: str | None = None,
+                 last_name: str |  None = None,
+                 phone: str |      None = None,
+                 email: str |      None = None
+) -> bool:
+    """
+    Edits an existing contact in the contact database. Allows updating specific
+    fields such as first name, last name, phone number, and email address. All
+    updates are optional, and only provided non-None parameters will be updated.
+    The function returns a boolean value indicating whether the contact update
+    was successful.
+    """
+    try:
+        contact = Contact.get(Contact.id == contact_id)
+    except Contact.DoesNotExist:
+        return False
+
+    #validation with helper
+    if first_name is not None:
+        first_name = validate_name(first_name)
+    if last_name is not None:
+        last_name = validate_name(last_name)
+    if phone is not None:
+        phone = validate_phone(phone)
+    if email is not None:
+        email = validate_email(email)
+
+    #changing data
+    if first_name is not None: contact.first_name = first_name
+    if last_name is not None: contact.last_name = last_name
+    if phone is not None: contact.phone = phone
+    if email is not None: contact.email = email
+
+    #saving data
+    try:
+        with db.atomic():
+            contact.save()
+    except IntegrityError as exc:
+        raise ValidationError(f"Contact already exists: {exc}") from None
+
+    return True
+
