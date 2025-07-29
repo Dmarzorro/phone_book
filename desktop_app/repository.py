@@ -1,8 +1,7 @@
 from peewee import IntegrityError
 from uuid import uuid4, UUID
-from typing import Optional
 
-from desktop_app.helper import ValidationError
+
 from models import Contact, db
 from helper import (
     validate_name,
@@ -11,7 +10,7 @@ from helper import (
     ValidationError,
 )
 
-def add_contact(first_name: str, last_name: str, phone: str, email: Optional[str] = None) -> Contact:
+def add_contact(first_name: str, last_name: str, phone: str, email:str = None) -> Contact:
     """
     Adds a new contact with the provided details to the contact list. This operation
     creates an instance of the `Contact` class using the specified inputs and includes
@@ -20,18 +19,18 @@ def add_contact(first_name: str, last_name: str, phone: str, email: Optional[str
     #validation
     first_name = validate_name(first_name)
     last_name = validate_name(last_name)
-    phone = validate_phone(phone)
+    phone_number = validate_phone(phone)
 
     #saving to database
     if email:
         email = validate_email(email)
     try:
         with db.atomic():
-            contact = Contact.creat(
+            contact = Contact.create(
                 id=uuid4(),
                 first_name=first_name,
                 last_name=last_name,
-                phone_number=phone,
+                phone_number=phone_number,
                 email=email,
             )
             return contact
@@ -54,10 +53,10 @@ def delete_contact(contact_id: UUID) -> bool:
         return False
 
 def edit_contact(contact_id: UUID,
-                 first_name: str | None = None,
+                 first_name:str |  None = None,
                  last_name: str |  None = None,
                  phone: str |      None = None,
-                 email: str |      None = None
+                 email: str |      None = None,
 ) -> bool:
     """
     Edits an existing contact in the contact database. Allows updating specific
