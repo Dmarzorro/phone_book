@@ -1,0 +1,5 @@
+dnspython==2.7.0
+email_validator==2.2.0
+idna==3.10
+phonenumbers==9.0.10
+peewee==3.18.2
