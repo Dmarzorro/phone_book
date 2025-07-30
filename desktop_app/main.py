@@ -1,12 +1,9 @@
-from desktop_app.repository import get_all_contacts
 from repository import (
     add_contact,
     get_all_contacts,
     edit_contact,
     delete_contact,
-    ValidationError
 )
-
 from helper import *
 
 class Menu:
@@ -28,7 +25,13 @@ class Menu:
         print('5. Exit')
 
     def show_contacts(self):
-        print(self.contact_list.show_contacts())
+        contacts = get_all_contacts()
+        if not contacts:
+            print("No contacts found")
+            return
+
+        for idx, c in enumerate(contacts, 1):
+            print(f"{idx}. {c}  —  ID: {str(c.id)[:8]}…")
 
     def add_contact(self):
         try:
@@ -63,13 +66,13 @@ class Menu:
 
         try:
             choice = int(input("Choose contact: "))
-            if choice < 0 or choice > len(contacts):
+            if choice <= 0 or choice > len(contacts):
                 raise IndexError("Invalid choice")
 
             contact = contacts[choice - 1]
             print(f"Deleting contact: {contact}, \n are you sure? (y/n)")
             confirm = input("Enter y to confirm:")
-            if confirm.lower() != "y":
+            if confirm.lower().strip() != "y":
                 print("Contact deletion cancelled")
                 return
 
@@ -79,14 +82,6 @@ class Menu:
                 print("Contact already removed")
         except (ValueError, IndexError):
             print("Invalid choice")
-
-
-
-
-            self.contact_list.delete_contact(contact)
-            print("Contact deleted successfully")
-        except (IndexError, TypeError):
-            print("This contact does not exist or invalid input")
 
     def edit_contact(self):
         contacts = get_all_contacts()
@@ -100,13 +95,13 @@ class Menu:
 
         try:
             choice = int(input("Choose contact to edit: "))
-            if choice < 0 or choice > len(contacts):
+            if choice <= 0 or choice > len(contacts):
                 raise IndexError("Invalid choice")
 
             contact = contacts[choice - 1]
 
             confirm = input(f"Editing contact: {contact}, \n are you sure? (y/n)")
-            if confirm.lower() != "y":
+            if confirm.lower().strip() != "y":
                 print("Contact edit cancelled")
                 return
 
@@ -125,7 +120,8 @@ class Menu:
         except ValidationError as ve:
             print(f"Error: {ve}")
 
-    def handle_choice(self, choice):
+    def handle_choice(self, choice_raw: str) -> None:
+        choice = choice_raw.strip().lower()
         match choice:
             case "1":
                 self.add_contact()
