@@ -1,6 +1,6 @@
 from peewee import IntegrityError
 from uuid import uuid4, UUID
-
+from typing import List
 
 from models import Contact, db
 from helper import (
@@ -9,6 +9,10 @@ from helper import (
     validate_email,
     ValidationError,
 )
+
+def get_all_contacts() -> List[Contact]:
+    return list(Contact.select().order_by(Contact.created_at.desc()))
+
 
 def add_contact(first_name: str, last_name: str, phone: str, email:str = None) -> Contact:
     """
@@ -30,7 +34,7 @@ def add_contact(first_name: str, last_name: str, phone: str, email:str = None) -
                 id=uuid4(),
                 first_name=first_name,
                 last_name=last_name,
-                phone_number=phone_number,
+                phone=phone,
                 email=email,
             )
             return contact
