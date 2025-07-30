@@ -1,11 +1,8 @@
 from peewee import *
 from datetime import datetime
+from uuid import uuid4
 
 db = SqliteDatabase('contactlist.db')
-
-class BaseModel(Model):
-    class Meta:
-        database = db
 
 class Contact(Model):
     id = UUIDField(primary_key=True, default=uuid4)
@@ -15,9 +12,10 @@ class Contact(Model):
     email = CharField(null=True, unique=True)
     created_at = DateTimeField(default=datetime.now)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+    def __str__(self) -> str:
+        email_display = self.email or "No Email"
+        return f"{self.first_name} {self.last_name} {self.phone} {email_display}"
 
     class Meta:
+        database = db
         table_name = 'contacts'
-
