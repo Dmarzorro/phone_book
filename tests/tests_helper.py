@@ -16,6 +16,7 @@ def test_validate_phone_empty():
         validate_phone("")
 
 # --- Name tests ---
+
 def test_validate_name_ok():
     assert validate_name("Vaictus") == "Vaictus"
 
@@ -29,7 +30,9 @@ def test_validate_name_empty():
 
 def test_validate_name_ok_with_spaces():
     assert validate_name(" Vaictus ") == "Vaictus"
+
 # --- Email tests ---
+
 def test_validate_email_ok():
     assert validate_email("jaroslawmazur63@gmail.com") == "jaroslawmazur63@gmail.com"
 
@@ -44,6 +47,3 @@ def test_validate_email_empty():
 def test_validate_email_without_at():
     with pytest.raises(ValidationError):
         validate_email("jaroslawmazur63gmail.com")
-
-
-
