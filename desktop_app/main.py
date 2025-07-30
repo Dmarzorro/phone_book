@@ -51,58 +51,79 @@ class Menu:
         except ValidationError as exc:
             print(f"Error: {exc}")
 
-    def delete_contact(self):
-        if not self.
+    def delete_contact_by_id(self):
+        contacts = get_all_contacts()
+        if not contacts:
             print("No contacts to delete")
             return
 
         print("\n Choose contact to delete: ")
-        for idx, contact in enumerate(self.contact_list.contacts, start=1):
+        for idx, contact in enumerate(contacts, start=1):
             print(f"{idx}. {contact}")
 
         try:
             choice = int(input("Choose contact: "))
-            contact = self.contact_list.contacts[choice - 1]
+            if choice < 0 or choice > len(contacts):
+                raise IndexError("Invalid choice")
+
+            contact = contacts[choice - 1]
+            print(f"Deleting contact: {contact}, \n are you sure? (y/n)")
+            confirm = input("Enter y to confirm:")
+            if confirm.lower() != "y":
+                print("Contact deletion cancelled")
+                return
+
+            if delete_contact(contact.id):
+                print("Contact deleted successfully")
+            else:
+                print("Contact already removed")
+        except (ValueError, IndexError):
+            print("Invalid choice")
+
+
+
+
             self.contact_list.delete_contact(contact)
             print("Contact deleted successfully")
         except (IndexError, TypeError):
             print("This contact does not exist or invalid input")
 
     def edit_contact(self):
-        if not self.contact_list.contacts:
+        contacts = get_all_contacts()
+        if not contacts:
             print("No contacts to edit")
             return
 
         print("\n Choose contact to edit: ")
-        for idx, contact in enumerate(self.contact_list.contacts, start=1):
+        for idx, contact in enumerate(contacts, start=1):
             print(f"{idx}. {contact}")
 
         try:
-            choice = int(input("Choose contact: "))
-            contact = self.contact_list.contacts[choice - 1]
+            choice = int(input("Choose contact to edit: "))
+            if choice < 0 or choice > len(contacts):
+                raise IndexError("Invalid choice")
 
-            print("\nLeave blank to keep current values")
+            contact = contacts[choice - 1]
 
-            confirm = input("Edit this contact? (y/n) or leave blank to cancel: ")
+            confirm = input(f"Editing contact: {contact}, \n are you sure? (y/n)")
             if confirm.lower() != "y":
                 print("Contact edit cancelled")
                 return
 
-            new_first_name = input("First name: ") or contact.first_name
-            new_last_name = input("Last name: ") or contact.last_name
-            new_phone_number = input("Phone number: ") or contact.phone_number
-            new_email = input("Email address: ") or contact.email
+            new_first = input("First name: ") or None
+            new_last = input("Last name: ") or None
+            new_phone = input("Phone number: ") or None
+            new_email = input("Email address: ") or None
 
-            self.contact_list.edit_contact(
-                contact,
-                new_first_name=new_first_name,
-                new_last_name=new_last_name,
-                new_phone_number=new_phone_number,
-                new_email=new_email,
-            )
-            print("Contact edited successfully")
-        except (IndexError, TypeError, ValueError):
-            print("This contact does not exist or invalid input")
+            ok = edit_contact(contact.id, first_name=new_first, last_name=new_last, phone=new_phone, email=new_email)
+
+            print("Contact edited successfully" if ok else "Contact not found or invalid input")
+
+        except (ValueError, IndexError):
+            print("Invalid choice")
+
+        except ValidationError as ve:
+            print(f"Error: {ve}")
 
     def handle_choice(self, choice):
         match choice:
@@ -111,7 +132,7 @@ class Menu:
             case "2":
                 self.edit_contact()
             case "3":
-                self.delete_contact()
+                self.delete_contact_by_id()
             case "4":
                 self.show_contacts()
             case "5":
