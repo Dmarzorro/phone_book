@@ -24,8 +24,6 @@ UUID primary keys
 
 Safer than auto‑increment IDs; ready for sync & merge
 
-Atomic transactions
-
 Every insert / edit / delete wrapped in db.atomic() – no half‑written rows
 
 Clean architecture
@@ -78,7 +76,7 @@ Email:
 
 ORM migration – swapping in‑memory storage for Peewee without breaking the UI
 
-Transaction safety – using with db.atomic() to guarantee all‑or‑nothing writes
+Entry safety – using with db.atomic() to guarantee all‑or‑nothing writes
 
 Repository pattern – decoupling business logic from CLI & from ORM details
 
