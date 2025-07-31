@@ -1,5 +1,13 @@
+colorama==0.4.6
 dnspython==2.7.0
 email_validator==2.2.0
 idna==3.10
-phonenumbers==9.0.10
+iniconfig==2.1.0
+packaging==25.0
 peewee==3.18.2
+phonenumbers==9.0.10
+pluggy==1.6.0
+prettytable==3.16.0
+Pygments==2.19.2
+pytest==8.4.1
+wcwidth==0.2.13

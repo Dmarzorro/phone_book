@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import phonenumbers as pn
 import re
 import unicodedata
@@ -23,6 +24,7 @@ __all__ = (
     "ensure_unique_email",
     "generate_uuid",
     "ValidationError",
+    "get_unique_filename",
 )
 
 def validate_phone(raw: str, region: str = "PL", *, strict:bool = True) -> str: # E.164 format
@@ -123,3 +125,11 @@ def prompt_valid(prompt: str, validator) -> str:
             return validator(value)
         except ValidationError as exc:
             print(exc)
+
+def get_unique_filename(base_name, extension):
+    filename = f"{base_name}.{extension}"
+    counter = 1
+    while os.path.exists(filename):
+        filename = f"{base_name}-{counter}.{extension}"
+        counter += 1
+    return filename
