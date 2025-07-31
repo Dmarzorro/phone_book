@@ -22,9 +22,25 @@ def test_add_contact_success(test_db):
     assert len(contact) == 1
 
 def test_add_contact_phone(test_db):
+    add_contact("Ivan", "Drago", "+48588232998", "somethinghere@gmail.com")
+
+    with pytest.raises(ValidationError):
+        add_contact("Ivan", "Drago", "+48588232998", "somethinghere@gmail.com")
+
+
+def test_add_contact_email(test_db):
     add_contact("Ivan", "Drago", "+48912345678", "somethinghere@gmail.com")
 
     with pytest.raises(ValidationError):
-        add_contact("Ivan", "Drago", "+48912345678", "somethinghere@gmail.com")
+        add_contact("Ivan", "Drago", "+48912345678", "somethingheregmail.com")
 
-def test_
+def test_delete_contact(test_db):
+    contact = add_contact("Ivan", "Drago", "+48912345678", "somethinghere@gmail.com")
+    contacts = get_all_contacts()
+    assert any(c.id == contact.id for c in contacts)
+
+    deleted = delete_contact(contact.id)
+    assert deleted is True
+
+    contacts_after = get_all_contacts()
+    assert all(c.id != contact.id for c in contacts_after)
