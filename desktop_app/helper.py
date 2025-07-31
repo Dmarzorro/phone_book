@@ -67,7 +67,7 @@ def validate_name(raw: str) -> str:
             continue
 
         if unicodedata.category(char)[0] not in ("L", "M"):
-            raise ValidationError(f"Invalid character: {char!r}")
+            raise ValidationError(f"Letters only: {char!r} is prohibited")
 
     cleaned = re.sub(r"\s+", " ", normalized)
     return cleaned

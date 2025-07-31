@@ -2,8 +2,8 @@ from peewee import IntegrityError
 from uuid import uuid4, UUID
 from typing import List
 
-from models import Contact, db
-from helper import (
+from desktop_app.models import Contact, db
+from desktop_app.helper import (
     validate_name,
     validate_phone,
     validate_email,
@@ -23,7 +23,7 @@ def add_contact(first_name: str, last_name: str, phone: str, email:str = None) -
     #validation
     first_name = validate_name(first_name)
     last_name = validate_name(last_name)
-    phone_number = validate_phone(phone)
+    phone = validate_phone(phone)
 
     #saving to database
     if email:
@@ -98,4 +98,3 @@ def edit_contact(contact_id: UUID,
         raise ValidationError(f"Contact already exists: {exc}") from None
 
     return True
-

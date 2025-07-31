@@ -1,10 +1,10 @@
-from repository import (
+from desktop_app.repository import (
     add_contact,
     get_all_contacts,
     edit_contact,
     delete_contact,
 )
-from helper import *
+from desktop_app.helper import *
 
 class Menu:
     def __init__(self):
@@ -138,4 +138,3 @@ class Menu:
 if __name__ == "__main__":
     menu = Menu()
     menu.run()
-
