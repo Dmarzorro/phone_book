@@ -1,10 +1,11 @@
-from repository import (
+from desktop_app.repository import (
     add_contact,
     get_all_contacts,
     edit_contact,
     delete_contact,
 )
-from helper import *
+from desktop_app.helper import *
+from desktop_app.file_export import export_contacts_to_md, export_contacts_to_txt, export_contacts_to_csv
 
 class Menu:
     def __init__(self):
@@ -22,7 +23,8 @@ class Menu:
         print('2. Edit Contact')
         print('3. Delete Contact')
         print('4. Show Contact list')
-        print('5. Exit')
+        print('5. Export Contacts')
+        print('6. Exit')
 
     def show_contacts(self):
         contacts = get_all_contacts()
@@ -120,6 +122,22 @@ class Menu:
         except ValidationError as ve:
             print(f"Error: {ve}")
 
+    def export_contacts(self):
+        print("Export format: 1. CSV  2. Markdown  3. TXT")
+        choice = input("Choose format: ").strip()
+        match choice:
+            case "1":
+                file_path = get_unique_filename("contacts", "csv")
+                export_contacts_to_csv(file_path)
+            case "2":
+                file_path = get_unique_filename("contacts", "md")
+                export_contacts_to_md(file_path)
+            case "3":
+                file_path = get_unique_filename("contacts", "txt")
+                export_contacts_to_txt(file_path)
+            case _:
+                print("Invalid format")
+
     def handle_choice(self, choice_raw: str) -> None:
         choice = choice_raw.strip().lower()
         match choice:
@@ -132,6 +150,8 @@ class Menu:
             case "4":
                 self.show_contacts()
             case "5":
+                self.export_contacts()
+            case "6":
                 print("Exiting")
                 exit()
 
